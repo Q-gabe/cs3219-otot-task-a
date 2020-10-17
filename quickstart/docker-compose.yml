@@ -1,0 +1,28 @@
+version: '3'
+services:
+    frontend:
+        image: qgabe/cs3219-otot-task-a_frontend:submission
+        networks:
+            - private-network
+    
+    backend:
+        image: qgabe/cs3219-otot-task-a_backend:submission
+        tty: true
+        stdin_open: true
+        networks:
+            - private-network
+
+    proxy:
+        image: qgabe/cs3219-otot-task-a_proxy:submission
+        restart:
+            always
+        depends_on:
+            - frontend
+            - backend
+        ports:
+            - 80:80
+        networks:
+            - private-network
+        
+networks:
+    private-network:

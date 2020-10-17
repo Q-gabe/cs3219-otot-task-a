@@ -1,0 +1,34 @@
+version: '3'
+services:
+    frontend:
+        build:
+            dockerfile: Dockerfile
+            context: ./frontend
+        networks:
+            - private-network
+    
+    backend:
+        build:
+            dockerfile: Dockerfile
+            context: ./backend
+        tty: true
+        stdin_open: true
+        networks:
+            - private-network
+
+    proxy:
+        build:
+            dockerfile: Dockerfile
+            context: ./proxy
+        restart:
+            always
+        depends_on:
+            - frontend
+            - backend
+        ports:
+            - 80:80
+        networks:
+            - private-network
+        
+networks:
+    private-network:
